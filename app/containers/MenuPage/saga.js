@@ -1,36 +1,39 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
-import {
-  WATER_SERVICE_METERS_REQUEST,
-  waterServiceMetersSuccess,
-  waterServiceMetersError,
-} from './actions';
+import { call, put, takeLatest, all, select } from 'redux-saga/effects';
+import { push } from 'connected-react-router/immutable';
 import { makeSelectToken } from 'containers/App/selectors';
 
-function* waterServiceMetersRequest() {
+import {
+  WATER_SERVICE_METER_EDIT_REQUEST,
+  waterServiceMeterEditSuccess,
+  waterServiceMeterEditError,
+} from './actions';
+
+function* waterServiceMetersRequest(payload) {
   try {
-    // TODO chatId from telegram
-    const chatId = '280601079';
+    const { key, value } = payload;
     const token = yield select(makeSelectToken());
 
     const data = yield call(() => {
       const url = '/api/water-service-meters';
       return fetch(url, {
-        method: 'post',
+        method: 'put',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
           Authorization: token,
         },
-        body: JSON.stringify({ chatId }),
+        body: JSON.stringify({ key, value }),
       })
         .then(res => res.json());
     });
-    yield put(waterServiceMetersSuccess(data));
+    yield put(waterServiceMeterEditSuccess(data));
   } catch (error) {
-    yield put(waterServiceMetersError(error));
+    yield put(waterServiceMeterEditError(error));
   }
 }
 
 export default function* root() {
-  yield takeLatest(WATER_SERVICE_METERS_REQUEST, waterServiceMetersRequest);
+  yield all([
+    takeLatest(WATER_SERVICE_METER_EDIT_REQUEST, waterServiceMetersRequest),
+  ]);
 }
