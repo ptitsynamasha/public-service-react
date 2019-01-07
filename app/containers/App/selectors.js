@@ -10,7 +10,6 @@ const selectRouter = state => state.get('router');
 
 const selectLogin = state => state.get('login');
 
-const selectMenu = state => state.get('menu');
 
 const makeSelectCurrentUser = () =>
   createSelector(selectGlobal, globalState => globalState.get('currentUser'));
@@ -34,20 +33,6 @@ const makeSelectLocation = () =>
 const makeSelectToken = () =>
   createSelector(selectLogin, loginState => loginState.get('token'));
 
-const makeSelectWaterServiceMeters = () =>
-  createSelector(selectMenu, menuState => {
-    const hotWaterKitchen = menuState.get('hotWaterKitchen');
-    const hotWaterBathroom = menuState.get('hotWaterBathroom');
-    const coldWaterKitchen = menuState.get('coldWaterKitchen');
-    const coldWaterBathroom = menuState.get('coldWaterBathroom');
-
-    return {
-      hotWaterKitchen,
-      hotWaterBathroom,
-      coldWaterKitchen,
-      coldWaterBathroom
-    }
-  });
 
 export {
   selectGlobal,
@@ -57,5 +42,4 @@ export {
   makeSelectRepos,
   makeSelectLocation,
   makeSelectToken,
-  makeSelectWaterServiceMeters,
 };

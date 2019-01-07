@@ -58,14 +58,14 @@ transpiled code in a `lib/` directory.
 In your `package.json`, you probably have something like this:
 
 ```json
-  "main": "lib/saga.js"
+  "main": "lib/waterService.js"
 ```
 
 This is what you want when you publish to the registry, but during development
 you probably want to change this to
 
 ```json
-  "main": "src/saga.js"
+  "main": "src/waterService.js"
 ```
 
 This will make sure that your main project always includes your most recent

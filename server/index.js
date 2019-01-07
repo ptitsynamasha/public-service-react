@@ -12,6 +12,8 @@ const port = require('./port');
 const setup = require('./middlewares/frontendMiddleware');
 const authRoutes = require('./routes/auth');
 const waterServiceMetersRoutes = require('./routes/water-service-meters');
+const waterServiceRoutes = require('./routes/water-service');
+const priceRoutes = require('./routes/price');
 const isDev = process.env.NODE_ENV !== 'production';
 const ngrok =
   (isDev && process.env.ENABLE_TUNNEL) || argv.tunnel
@@ -45,6 +47,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/water-service-meters', waterServiceMetersRoutes);
+app.use('/api/water-service', waterServiceRoutes);
+app.use('/api/price', priceRoutes);
 
 app.get('*.js', (req, res, next) => {
   req.url = req.url + '.gz'; // eslint-disable-line

@@ -3,16 +3,16 @@ import connect from 'react-redux/es/connect/connect';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
-import { makeSelectWaterServiceMeters } from '../../containers/store/selectors/waterService';
+import { makeSelectWaterServiceMetersPrice } from '../../containers/store/selectors/waterService';
 import { initModal, openModal, closeModal } from '../../utils/materialize';
 import * as actions from '../../containers/store/actions/waterService';
 
-class WaterServiceMeters extends React.Component {
+class WaterServiceMetersPrice extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       modalNode: null,
-      metersList: [],
+      priceList: [],
     };
     this.initState();
   }
@@ -23,16 +23,15 @@ class WaterServiceMeters extends React.Component {
       value: '',
       newValue: '',
     };
-
   };
 
   createTableBody = () => {
-    const meters = this.props.meters;
+    const price = this.props.price;
     const trList = [];
 
-    if (meters) {
-      for (const key in meters) {
-        const value = meters[key];
+    if (price) {
+      for (const key in price) {
+        const value = price[key];
         trList.push(
           <tr key={key}>
             <td>{key}</td>
@@ -40,7 +39,7 @@ class WaterServiceMeters extends React.Component {
             <td>
               <button
                 className="waves-effect waves-light btn"
-                onClick={this.onClickMeter.bind(this, key)}
+                onClick={this.onClickPrice.bind(this, key)}
               >
                 Редактировать
               </button>
@@ -48,7 +47,7 @@ class WaterServiceMeters extends React.Component {
           </tr>,
         );
       }
-      this.setState({ metersList: trList });
+      this.setState({ priceList: trList });
     }
   };
 
@@ -57,14 +56,14 @@ class WaterServiceMeters extends React.Component {
   }
 
   componentDidMount() {
-    const modalNode = document.querySelector('#modal-water-service-meters');
+    const modalNode = document.querySelector('#modal-water-service-meters-price');
     initModal(modalNode);
     this.setState({ modalNode });
     this.createTableBody();
   }
 
-  onClickMeter = key => {
-    const value = this.props.meters[key];
+  onClickPrice = key => {
+    const value = this.props.price[key];
     this.setState({ editable: { key, value } });
     openModal(this.state.modalNode);
   };
@@ -73,7 +72,7 @@ class WaterServiceMeters extends React.Component {
     if ($event !== undefined && $event.preventDefault) $event.preventDefault();
     const { newValue, key } = this.state.editable;
     if (newValue) {
-      this.props.onChangeWaterMeter(key, newValue);
+      this.props.onChangePrice(key, newValue);
       closeModal(this.state.modalNode);
       this.initState();
     }
@@ -86,20 +85,20 @@ class WaterServiceMeters extends React.Component {
   };
 
   render() {
-    const { metersList, editable } = this.state;
+    const { priceList, editable } = this.state;
     return (
       <div>
         <table className="striped">
           <thead>
           <tr>
             <th>Счетчик</th>
-            <th>Номер</th>
+            <th>Цена</th>
           </tr>
           </thead>
-          <tbody>{metersList}</tbody>
+          <tbody>{priceList}</tbody>
         </table>
 
-        <div id="modal-water-service-meters" className="modal">
+        <div id="modal-water-service-meters-price" className="modal">
           <form className="col s12" onSubmit={this.onSubmit}>
             <div className="modal-content">
               <h4>Редактировать {editable.key}</h4>
@@ -135,17 +134,18 @@ class WaterServiceMeters extends React.Component {
   }
 }
 
-WaterServiceMeters.propTypes = {
-  onChangeWaterMeter: PropTypes.func,
+WaterServiceMetersPrice.propTypes = {
+  onChangePrice: PropTypes.func,
+  price: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
-  meters: makeSelectWaterServiceMeters(),
+  price: makeSelectWaterServiceMetersPrice(),
 });
 
 const mapDispatchToProps = dispatch => ({
-  onChangeWaterMeter: (key, newValue) =>
-    dispatch(actions.waterServiceMeterEditRequest(key, newValue)),
+  onChangePrice: (key, newValue) =>
+    dispatch(actions.waterServiceMeterPriceEditRequest(key, newValue)),
 });
 
 const withConnect = connect(
@@ -153,4 +153,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(WaterServiceMeters);
+export default compose(withConnect)(WaterServiceMetersPrice);

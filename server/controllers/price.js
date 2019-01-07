@@ -1,27 +1,28 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const WaterServiceMeter = require('../models/WaterServiceMeter');
+const Price = require('../models/Price');
 const keys = require('../config/keys');
 
 module.exports.post = (req, res) => {
+  const { serviceName } = req.body;
 
   User.findOne({ _id: req.user.id }, (err, user) => {
     if (err) return res.status(500).json({ message: 'Server error' });
     if (!user) return res.status(400).json({ message: 'User not found' });
 
-    WaterServiceMeter.findOne({ chatId: user.chatId }, (err, meter) => {
+    Price.findOne({ chatId: user.chatId, serviceName }, (err, price) => {
       if (err) return res.status(500).json({ message: 'Server error' });
-      if (!meter) return res.status(400).json({ message: 'Meter not found' });
-      return res.status(200).json(meter);
+      if (!price) return res.status(400).json({ message: 'Price not found' });
+      return res.status(200).json(price.data);
     });
   });
 };
 
 module.exports.put = (req, res) => {
-  const { key, value } = req.body;
+  const { key, value, serviceName } = req.body;
 
-  if (!key || !value) {
+  if (!key || !value || !serviceName) {
     return res.status(404).json({
       message: 'empty body request',
     });
@@ -31,20 +32,15 @@ module.exports.put = (req, res) => {
     if (err) return res.status(500).json({ message: 'Server error' });
     if (!user) return res.status(400).json({ message: 'User not found' });
 
-    WaterServiceMeter.findOne({ chatId: user.chatId }, (err, meter) => {
+    Price.findOne({ chatId: user.chatId, serviceName }, (err, price) => {
       if (err) return res.status(500).json({ message: 'Server error' });
-      if (!meter) return res.status(400).json({ message: 'Meter not found' });
+      if (!price) return res.status(400).json({ message: 'Price not found' });
 
-      meter[key] = value;
-      meter.save(err => {
+      price[key] = value;
+      price.save(err => {
         if (err) return res.status(500).json({ message: 'Server error' });
 
-        res.status(200).json({
-          coldWaterKitchen: meter.coldWaterKitchen,
-          coldWaterBathroom: meter.coldWaterBathroom,
-          hotWaterKitchen: meter.hotWaterKitchen,
-          hotWaterBathroom: meter.hotWaterBathroom,
-        });
+        res.status(200).json({ ...price.data });
       });
     });
   });

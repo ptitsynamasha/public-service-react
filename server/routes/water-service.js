@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/water-service-meters');
+const controller = require('../controllers/water-service');
 const passport = require('passport');
 
 router.post('/', passport.authenticate('jwt', {session: false}), controller.post);

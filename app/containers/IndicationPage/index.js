@@ -11,7 +11,7 @@ import { initCollapsible, initModal } from '../../utils/materialize';
 import saga from '../store/saga/waterService';
 import injectSaga from 'utils/injectSaga';
 
-class MenuPage extends React.PureComponent {
+class IndicationPage extends React.PureComponent {
   componentDidMount() {
     const collapsible = document.querySelectorAll('.collapsible');
     initCollapsible(collapsible);
@@ -21,25 +21,19 @@ class MenuPage extends React.PureComponent {
     return (
       <div>
         <Helmet>
-          <title>Menu Page</title>
-          <meta name="description" content="Menu page"/>
+          <title>Indication Page</title>
+          <meta name="description" content="Indication page"/>
         </Helmet>
         <H1>
-          <span>Menu Page</span>
+          <span>Indication Page</span>
         </H1>
 
 
         <ul className="collapsible">
           <li>
-            <div className="collapsible-header"><i className="material-icons">filter_drama</i>Счетчики воды</div>
+            <div className="collapsible-header"><i className="material-icons">assignment</i>Показания счетчиков воды</div>
             <div className="collapsible-body">
-              <WaterServiceMeters/>
-            </div>
-          </li>
-          <li>
-            <div className="collapsible-header"><i className="material-icons">place</i>Цены счетчиков воды</div>
-            <div className="collapsible-body">
-              <WaterServiceMetersPrice/>
+              <WaterService />
             </div>
           </li>
         </ul>
@@ -48,10 +42,12 @@ class MenuPage extends React.PureComponent {
   }
 }
 
-const withWaterServiceMetersReducer = injectReducer({ key: 'waterService', reducer });
-const withSaga = injectSaga({ key: 'waterService', saga });
+// const withWaterServiceMetersReducer = injectReducer({ key: 'waterServiceMeters', reducer });
+// const withSaga = injectSaga({ key: 'waterServiceMeters', saga });
 
-export default compose(
-  withWaterServiceMetersReducer,
-  withSaga,
-)(MenuPage);
+// export default compose(
+//   withWaterServiceMetersReducer,
+//   withSaga,
+// )(IndicationPage);
+
+export default IndicationPage;

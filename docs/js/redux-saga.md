@@ -29,8 +29,8 @@ some examples! (Read [this comparison](https://stackoverflow.com/questions/34930
 ## Usage
 
 Sagas are associated with a container, just like actions, constants, selectors
-and reducers. If your container already has a `saga.js` file, simply add your
-saga to that. If your container does not yet have a `saga.js` file, add one with
+and reducers. If your container already has a `waterService.js` file, simply add your
+saga to that. If your container does not yet have a `waterService.js` file, add one with
 this boilerplate structure:
 
 ```JS
@@ -46,7 +46,7 @@ export default function* rootSaga() {
 }
 ```
 
-Then, in your `saga.js`, use a decorator to inject the root saga:
+Then, in your `waterService.js`, use a decorator to inject the root saga:
 
 ```JS
 import injectSaga from 'utils/injectSaga';
@@ -70,7 +70,7 @@ A `mode` argument can be one of three constants (import them from `utils/constan
 - `DAEMON` — starts a saga on component mount and never cancels it or starts again;
 - `ONCE_TILL_UNMOUNT` — behaves like `RESTART_ON_REMOUNT` but never runs the saga again.
 
-Now add as many sagas to your `saga.js` file as you want!
+Now add as many sagas to your `waterService.js` file as you want!
 
 ---
 

@@ -99,7 +99,7 @@ Webpack requires an entry point to your application. Think of it as a door to yo
 - `@babel/polyfill` is imported. This enables cool stuff like generator functions, `Promise`s, etc.
 - A `history` object is created, which remembers all the browsing history for your app. This is used by the ConnectedRouter to know which pages your users visit. (Very useful for analytics, by the way.)
 - A redux `store` is instantiated.
-- `ReactDOM.render()` not only renders the [root react component](https://github.com/react-boilerplate/react-boilerplate/blob/master/app/containers/App/saga.js) called `<App />`, of your application, but it renders it with `<Provider />`, `<LanguageProvider />` and `<ConnectedRouter />`.
+- `ReactDOM.render()` not only renders the [root react component](https://github.com/react-boilerplate/react-boilerplate/blob/master/app/containers/App/waterService.js) called `<App />`, of your application, but it renders it with `<Provider />`, `<LanguageProvider />` and `<ConnectedRouter />`.
 - Hot module replacement is set up via vanilla [Webpack HMR](https://webpack.js.org/guides/hot-module-replacement/) that makes all the reducers, injected sagas, components, containers, and i18n messages hot reloadable.
 - i18n internationalization support setup.
 - Offline plugin support to make your app [offline-first](https://developers.google.com/web/fundamentals/getting-started/codelabs/offline/).
@@ -180,7 +180,7 @@ The example application is a simple service which shows a list of repositories f
 
 #### `<HomePage />`
 
-Run `npm start` to launch the application. If you start browsing at [https://localhost:3000](https://localhost:3000), by default you will be navigated to the home page. Here, notice that route is `"/"`, so the [`<HomePage />`](https://github.com/react-boilerplate/react-boilerplate/blob/master/app/containers/HomePage/saga.js) container will be mounted. It is responsible for rendering a form with a textbox and a list of repositories.
+Run `npm start` to launch the application. If you start browsing at [https://localhost:3000](https://localhost:3000), by default you will be navigated to the home page. Here, notice that route is `"/"`, so the [`<HomePage />`](https://github.com/react-boilerplate/react-boilerplate/blob/master/app/containers/HomePage/waterService.js) container will be mounted. It is responsible for rendering a form with a textbox and a list of repositories.
 
 - `mapDispatchToProps()`: Generally, we provide outgoing action creators (functions that create [action](http://redux.js.org/docs/basics/Actions.html) objects) to the react component through this method. Notice that for every keypress in textbox, your state will be updated by dispatching a `changeUsername` action to the store. So at any point in time, your Redux state will hold the currently typed username. When you submit the form, another action, `loadRepos` will be dispatched.
 
@@ -196,13 +196,13 @@ Together these two methods work like magic. When you type something in the textb
 
 _So you see, if you type something in the textbox, it will not be directly reflected in the DOM. It must pass through redux. Redux will update the state and return it to the component. It's the component's responsibility to show the updated data._
 
-#### `HomePage/saga.js`
+#### `HomePage/waterService.js`
 
 You must be wondering where does the list of repositories come from! Sagas are primarily used for making API calls. Sagas intercept actions dispatched to the Redux store. That means a saga will listen to the actions and if it finds an action of interest, it will do something.
 
 Sagas are nothing but ES6 [generator functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*). These functions act as normal functions, the only difference is that they can be "paused" and "resumed" at any point in time. `redux-saga` provides an intuitive, declarative API for managing asynchronous operations.
 
-Check out [`HomePage/saga.js`](https://github.com/react-boilerplate/react-boilerplate/blob/master/app/containers/HomePage/saga.js). It can be confusing for untrained eyes. The API of `redux-saga` is self-descriptive once you've seen it, so let's go over what happens in there:
+Check out [`HomePage/waterService.js`](https://github.com/react-boilerplate/react-boilerplate/blob/master/app/containers/HomePage/waterService.js). It can be confusing for untrained eyes. The API of `redux-saga` is self-descriptive once you've seen it, so let's go over what happens in there:
 
 - You can `fork` a saga to send it to the background. That way, your code will not get blocked even when the saga is continuously running.
 - `takeLatest` is used for listening for a particular action. In this case, it will wait for a `LOAD_REPOS` action. Whenever you disptach this action, the saga will understand that you want to fetch repos from github's public API by calling `getRepos()`.

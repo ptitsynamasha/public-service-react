@@ -157,8 +157,8 @@ Imagine a navigation bar, this is what its folder might look like:
 
 ```
 NavBar          # Wrapping folder
-├── saga.js      # Actual component
-├── actions.js    # Actions
+├── waterService.js      # Actual component
+├── waterService.js    # Actions
 ├── constants.js  # Constants
 ├── reducer.js    # Reducer
 └── test               # Folder of tests
@@ -173,7 +173,7 @@ let's see what testing the actions and the reducer would look like.
 This is what our `NavBar` actions look like:
 
 ```javascript
-// actions.js
+// waterService.js
 
 import { TOGGLE_NAV } from './constants';
 

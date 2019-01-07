@@ -28,6 +28,10 @@ function NavBar(props) {
       link: '/menu',
       title: 'Menu',
     });
+    headerLinkArray.push({
+      link: '/indication',
+      title: 'Indication',
+    });
   } else {
     headerLinkArray.push({
       link: '/login',
