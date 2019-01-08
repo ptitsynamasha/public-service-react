@@ -36,6 +36,12 @@ import { translationMessages } from './i18n';
 // Create redux store with history
 const initialState = {};
 const store = configureStore(initialState, history);
+
+// store.subscribe(() => {
+//   console.log(store.getState());
+// });
+
+
 const MOUNT_NODE = document.getElementById('app');
 
 const render = messages => {
@@ -43,7 +49,7 @@ const render = messages => {
     <Provider store={store}>
       <LanguageProvider messages={messages}>
         <ConnectedRouter history={history}>
-          <App />
+          <App/>
         </ConnectedRouter>
       </LanguageProvider>
     </Provider>,

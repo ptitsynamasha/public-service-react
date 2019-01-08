@@ -37,3 +37,7 @@ export function toast(errorCode = false, message = '') {
   }
   M.toast({ html: message, classes: className });
 }
+
+export function initTabs(node) {
+  M.Tabs.init(node);
+}

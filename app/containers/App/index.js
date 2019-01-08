@@ -7,7 +7,6 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { Switch, Route, Redirect } from 'react-router-dom';
@@ -25,11 +24,7 @@ import injectSaga from 'utils/injectSaga';
 import GlobalStyle from '../../global-styles';
 import reducer from '../LoginPage/reducer';
 import saga from '../LoginPage/saga';
-// import ProtectedRoute from '../../components/ProtectedRoute';
-import { createStructuredSelector } from 'reselect';
-import { makeSelectToken } from './selectors';
-import connect from 'react-redux/es/connect/connect';
-import { mapDispatchToProps } from '../HomePage';
+
 
 const AppWrapper = styled.div`
   max-width: calc(768px + 16px * 2);
@@ -41,58 +36,28 @@ const AppWrapper = styled.div`
 `;
 
 function App() {
-    return (
+  return (
     <AppWrapper>
       <Helmet
         titleTemplate="%s - React.js Boilerplate"
         defaultTitle="React.js Boilerplate"
       >
-        <meta name="description" content="A React.js Boilerplate application"/>
+        <meta name="description" content="A React.js Boilerplate application" />
       </Helmet>
-      <Header/>
+      <Header />
       <Switch>
-        <Route exact path="/" component={HomePage}/>
-        <Route path="/features" component={FeaturePage}/>
-        <Route path="/login" component={LoginPage}/>
-        <Route path="/indication" component={IndicationPage}/>
-        <Route path='/menu' component={MenuPage}/>
-        <Route path="" component={NotFoundPage}/>
+        <Route exact path="/" component={HomePage} />
+        <Route path="/features" component={FeaturePage} />
+        <Route path="/login" component={LoginPage} />
+        <Route path="/indication" component={IndicationPage} />
+        <Route path="/menu" component={MenuPage} />
+        <Route path="" component={NotFoundPage} />
       </Switch>
-      <Footer/>
-      <GlobalStyle/>
+      <Footer />
+      <GlobalStyle />
     </AppWrapper>
   );
 }
-
-// function ProtectedRoute({ authToken, component: Component, ...rest }) {
-//   console.log(authToken);
-//   return (
-//     <Route
-//       {...rest}
-//       render={props =>
-//         authToken ? (
-//           <Component {...props} />
-//         ) : (
-//           <Redirect
-//             to={{
-//               pathname: '/login',
-//               state: { from: props.location },
-//             }}
-//           />
-//         )
-//       }
-//     />
-//   );
-// }
-
-
-const mapStateToProps = createStructuredSelector({
-  token: makeSelectToken(),
-});
-
-const withConnect = connect(
-  mapStateToProps,
-);
 
 const withReducer = injectReducer({ key: 'login', reducer });
 const withSaga = injectSaga({ key: 'login', saga });
@@ -100,5 +65,4 @@ const withSaga = injectSaga({ key: 'login', saga });
 export default compose(
   withReducer,
   withSaga,
-  withConnect,
 )(App);

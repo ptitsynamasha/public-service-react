@@ -14,8 +14,7 @@ export const makeSelectWaterServiceMetersPrice = () =>
     return { ...price };
   });
 
-export const makeSelectWaterService = () =>
+export const makeSelectWaterServiceIndication = () =>
   createSelector(selectWaterService, waterServiceMetersState => {
-    const data = waterServiceMetersState.get('data');
-    return { ...data };
+    return waterServiceMetersState.get('indication');
   });

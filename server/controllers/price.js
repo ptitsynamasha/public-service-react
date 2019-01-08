@@ -35,12 +35,10 @@ module.exports.put = (req, res) => {
     Price.findOne({ chatId: user.chatId, serviceName }, (err, price) => {
       if (err) return res.status(500).json({ message: 'Server error' });
       if (!price) return res.status(400).json({ message: 'Price not found' });
-
-      price[key] = value;
+      (price.data)[key] = value;
       price.save(err => {
         if (err) return res.status(500).json({ message: 'Server error' });
-
-        res.status(200).json({ ...price.data });
+        return res.status(200).json({ ...price.data });
       });
     });
   });

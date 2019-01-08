@@ -31,9 +31,7 @@ describe('<LocaleToggle />', () => {
   it('should present the default `en` english language option', () => {
     const renderedComponent = mount(
       <Provider store={store}>
-        <LanguageProvider messages={translationMessages}>
-          <LocaleToggle />
-        </LanguageProvider>
+
       </Provider>,
     );
     expect(renderedComponent.contains(<option value="en">en</option>)).toBe(

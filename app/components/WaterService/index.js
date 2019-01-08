@@ -3,7 +3,7 @@ import connect from 'react-redux/es/connect/connect';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
-import { makeSelectWaterService } from '../../containers/store/selectors/waterService';
+import { makeSelectWaterServiceIndication } from '../../containers/store/selectors/waterService';
 import { initModal, openModal, closeModal } from '../../utils/materialize';
 import * as actions from '../../containers/store/actions/waterService';
 
@@ -14,42 +14,24 @@ class WaterServiceMeters extends React.Component {
       modalNode: null,
       list: [],
     };
-    this.initState();
   }
 
-  initState = () => {
-    this.state.editable = {
-      key: '',
-      value: '',
-      newValue: '',
-    };
-
-  };
-
   createTableBody = () => {
-    const waterService = this.props.waterService;
+    const indications = this.props.indications;
     const trList = [];
 
-    if (waterService) {
-      if (waterService.message) {
-        trList.push(
-          <tr key={0}>
-            <td>Пока нет показаний</td>
-          </tr>,
-        );
-      } else {
-        for (const key in waterService) {
-          const value = waterService[key];
-          trList.push(
-            <tr key={key}>
-              <td>{key}</td>
-              <td>{value}</td>
-            </tr>,
-          );
-        }
-      }
-      this.setState({ list: trList });
-    }
+    indications.forEach((indication, key) => {
+      trList.push(
+        <tr key={key}>
+          <td>{indication.date}</td>
+          <td>{indication.hotKittenValue}</td>
+          <td>{indication.coldKittenValue}</td>
+          <td>{indication.hotBathroomValue}</td>
+          <td>{indication.coldBathroomValue}</td>
+        </tr>,
+      );
+    });
+    this.setState({ list: trList });
   };
 
   componentWillReceiveProps() {
@@ -57,103 +39,119 @@ class WaterServiceMeters extends React.Component {
   }
 
   componentDidMount() {
-    const modalNode = document.querySelector('#modal-water-service');
+    const modalNode = document.querySelector('#modal-water-service-indications');
     initModal(modalNode);
     this.setState({ modalNode });
     this.createTableBody();
   }
 
-  onClickMeter = key => {
-    const value = this.props.waterService[key];
-    this.setState({ editable: { key, value } });
+  onClickMeter = () => {
     openModal(this.state.modalNode);
   };
 
   onSubmit = $event => {
     if ($event !== undefined && $event.preventDefault) $event.preventDefault();
-    const { newValue, key } = this.state.editable;
-    if (newValue) {
-      this.props.onChangeWaterMeter(key, newValue);
+    const { newIndication } = this.state;
+
+    if (newIndication) {
+      this.props.onSubmitNewIndications(newIndication);
       closeModal(this.state.modalNode);
-      this.initState();
     }
   };
 
   onChange = $event => {
-    const newValue = $event.target.value;
-    const oldState = this.state.editable;
-    this.setState({ editable: { ...oldState, newValue } });
+    const oldState = this.state.newIndication;
+    this.setState({ newIndication: { ...oldState, [$event.target.id]: $event.target.value } });
   };
 
   render() {
     const { list } = this.state;
-    const waterService = this.props.waterService;
-    if (waterService.message) {
-      return (
+    return (
+      <div>
         <div>
-          <h2>Пока нет показаний</h2>
+          <button
+            className="waves-effect waves-light btn"
+            onClick={this.onClickMeter}
+          >
+            Добавить показание
+          </button>
         </div>
-      );
-    } else {
-      return (
-        <div>
-          <table className="striped">
-            <thead>
-            <tr>
-              <th>Счетчик</th>
-              <th>Значение</th>
-            </tr>
-            </thead>
-            <tbody>{list}</tbody>
-          </table>
 
-          <div id="modal-water-service" className="modal">
-            <form className="col s12" onSubmit={this.onSubmit}>
-              <div className="modal-content">
-                <h4>Добавить показание</h4>
-                <div className="input-field inline">
-                  <input
-                    id="number_inline"
-                    type="text"
-                    className="validate"
-                    onChange={this.onChange}
-                  />
-                  <label htmlFor="number_inline">Номер</label>
-                  <span
-                    className="helper-text"
-                    data-error="wrong"
-                    data-success="right"
-                  >
-                </span>
+        <table className="striped">
+          <thead>
+          <tr>
+            <th>date</th>
+            <th>hotKittenValue</th>
+            <th>coldKittenValue</th>
+            <th>hotBathroomValue</th>
+            <th>coldBathroomValue</th>
+          </tr>
+          </thead>
+          <tbody>{list}</tbody>
+        </table>
+
+
+        <div id="modal-water-service-indications" className="modal">
+          <form className="col s12" onSubmit={this.onSubmit}>
+            <div className="modal-content">
+              <h4>Добавить показание</h4>
+
+              <div className="container">
+                <div className="row">
+                  <div className="input-field col s6">
+                    <input onChange={this.onChange} id="hotKittenValue" type="number" step="0.01" required
+                           className="validate"/>
+                    <label htmlFor="hotKittenValue">hot Kitten Value</label>
+                  </div>
+                  <div className="input-field col s6">
+                    <input onChange={this.onChange} id="coldKittenValue" type="number" step="0.01" required
+                           className="validate"/>
+                    <label htmlFor="coldKittenValue">cold Kitten Value</label>
+                  </div>
                 </div>
+
+                <div className="row">
+                  <div className="input-field col s6">
+                    <input onChange={this.onChange} id="hotBathroomValue" type="number" step="0.01" required
+                           className="validate"/>
+                    <label htmlFor="hotBathroomValue">hot Bathroom Value</label>
+                  </div>
+                  <div className="input-field col s6">
+                    <input onChange={this.onChange} id="coldBathroomValue" type="number" step="0.01" required
+                           className="validate"/>
+                    <label htmlFor="coldBathroomValue">cold Bathroom Value</label>
+                  </div>
+                </div>
+
               </div>
-              <div className="modal-footer">
-                <button
-                  className="waves-effect waves-green btn-flat"
-                  type="submit"
-                >
-                  Сохранить
-                </button>
-              </div>
-            </form>
-          </div>
+
+            </div>
+            <div className="modal-footer">
+              <button
+                className="waves-effect waves-green btn-flat"
+                type="submit"
+              >
+                Сохранить
+              </button>
+            </div>
+          </form>
         </div>
-      );
-    }
+      </div>
+    );
   }
 }
 
 WaterServiceMeters.propTypes = {
-  onChangeWaterMeter: PropTypes.func,
+  onSubmitNewIndications: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  waterService: makeSelectWaterService(),
+  indications: makeSelectWaterServiceIndication(),
 });
 
 const mapDispatchToProps = dispatch => ({
-  onChangeWaterMeter: (key, newValue) =>
-    dispatch(actions.waterServiceMeterEditRequest(key, newValue)),
+  onSubmitNewIndications: (indication) =>{
+    dispatch(actions.waterServiceAddIndicationRequest(indication))},
 });
 
 const withConnect = connect(

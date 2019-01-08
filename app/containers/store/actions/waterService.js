@@ -19,6 +19,9 @@ export const WATER_SERVICE_METER_PRICE_EDIT_ERROR = 'WATER_SERVICE_METER_PRICE_E
 export const WATER_SERVICE_REQUEST = 'WATER_SERVICE_REQUEST';
 export const WATER_SERVICE_SUCCESS = 'WATER_SERVICE_SUCCESS';
 export const WATER_SERVICE_ERROR = 'WATER_SERVICE_ERROR';
+export const WATER_SERVICE_INDICATION_ADD_REQUEST = 'WATER_SERVICE_INDICATION_ADD_REQUEST';
+export const WATER_SERVICE_INDICATION_ADD_SUCCESS = 'WATER_SERVICE_INDICATION_ADD_SUCCESS';
+export const WATER_SERVICE_INDICATION_ADD_ERROR = 'WATER_SERVICE_INDICATION_ADD_ERROR';
 
 export function waterServiceMeterEditRequest(key, value) {
   return {
@@ -109,18 +112,10 @@ export function waterServiceMeterPriceEditRequest(key, value) {
   };
 }
 
-export function waterServiceMeterPriceEditSuccess({
-                                                    hotWaterPrice,
-                                                    coldWaterPrice,
-                                                    sewagePrice,
-                                                  }) {
+export function waterServiceMeterPriceEditSuccess(price) {
   return {
     type: WATER_SERVICE_METER_PRICE_EDIT_SUCCESS,
-    price: {
-      hotWaterPrice,
-      coldWaterPrice,
-      sewagePrice,
-    },
+    price,
   };
 }
 
@@ -132,24 +127,10 @@ export function waterServiceMeterPriceEditError(status, error) {
   };
 }
 
-export function waterServiceSuccess({
-                                      date,
-                                      hotKittenValue,
-                                      coldKittenValue,
-                                      hotBathroomValue,
-                                      coldBathroomValue,
-  message
-                                    }) {
+export function waterServiceSuccess(indication) {
   return {
     type: WATER_SERVICE_SUCCESS,
-    data: {
-      date,
-      hotKittenValue,
-      coldKittenValue,
-      hotBathroomValue,
-      coldBathroomValue,
-      message,
-    },
+    indication,
   };
 }
 
@@ -157,6 +138,28 @@ export function waterServiceError(status, error) {
   toast(status, error.message);
   return {
     type: WATER_SERVICE_ERROR,
+    error,
+  };
+}
+
+export function waterServiceAddIndicationRequest(indication) {
+  return {
+    type: WATER_SERVICE_INDICATION_ADD_REQUEST,
+    indication,
+  };
+}
+
+export function waterServiceAddIndicationSuccess(indication) {
+  return {
+    type: WATER_SERVICE_INDICATION_ADD_SUCCESS,
+    indication,
+  };
+}
+
+export function waterServiceAddIndicationError(status, error) {
+  toast(status, error.message);
+  return {
+    type: WATER_SERVICE_INDICATION_ADD_ERROR,
     error,
   };
 }
