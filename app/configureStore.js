@@ -7,20 +7,9 @@ import { fromJS } from 'immutable';
 import { routerMiddleware } from 'connected-react-router/immutable';
 import createSagaMiddleware from 'redux-saga';
 import createReducer from './reducers';
-import { persistStore, persistReducer } from 'redux-persist';
-import storageSession from 'redux-persist/lib/storage/session';
-import immutableTransform from 'redux-persist-transform-immutable';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const persistConfig = {
-  transforms: [immutableTransform()],
-  key: 'root',
-  storage: storageSession,
-  whitelist: ['language'],
-};
-
-const persistedReducer = persistReducer (persistConfig, createReducer);
 
 export default function configureStore(initialState = {}, history) {
   // Create the store with two middlewares
@@ -41,8 +30,8 @@ export default function configureStore(initialState = {}, history) {
   /* eslint-enable */
 
   const store = createStore(
-    // persistedReducer,
     createReducer(),
+    // persistedReducer,
     fromJS(initialState),
     composeEnhancers(...enhancers),
   );
@@ -60,8 +49,5 @@ export default function configureStore(initialState = {}, history) {
     });
   }
 
-  const persistor = persistStore(store);
-
-  // return { persistor, store };
   return store;
 }

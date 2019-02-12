@@ -7,9 +7,7 @@ import Banner from './banner.jpg';
 function Header() {
   return (
     <div>
-      <A href="https://twitter.com/mxstbr">
-        <Img src={Banner} alt="react-boilerplate - Logo"/>
-      </A>
+      <Img src={Banner} alt="react-boilerplate - Logo"/>
       <NavBar />
     </div>
   );
